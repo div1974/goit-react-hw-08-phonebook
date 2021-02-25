@@ -23,8 +23,11 @@ const register = (credentials) => (dispatch) => {
       token.set(response.data.token);
       dispatch(authActions.registerSuccess(response.data));
     })
-    .catch((error) => dispatch(authActions.registerError(error)))
-    .finally(NotificationManager.error("Пользователь не найден!", "", 1000));
+    .catch((error) => {
+      dispatch(authActions.registerError(error));
+      NotificationManager.error("Заполните правильно все поля!", "", 1000);
+    }
+    )
 };
 
 const logIn = (credentials) => (dispatch) => {
@@ -36,8 +39,13 @@ const logIn = (credentials) => (dispatch) => {
       token.set(response.data.token);
       dispatch(authActions.loginSuccess(response.data));
     })
-    .catch((error) => dispatch(authActions.loginError(error)))
-    .finally(NotificationManager.error("Заполните все поля!", "", 1000));
+    .catch((error) => {
+    
+      dispatch(authActions.loginError(error));
+      NotificationManager.error("Пользователь не найден!", "", 1000)
+    }
+    )
+    
 };
 
 const getCurrentUser = () => (dispatch, getState) => {
